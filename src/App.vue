@@ -1,29 +1,27 @@
 <template>
 	<el-config-provider :locale="locale">
 		<div id="nav">
-			<router-link to="/">{{ $t("nav.home") }}</router-link> |
-			<router-link to="/about">{{ $t("nav.about") }}</router-link> |
-			<router-link to="/example">{{ $t("nav.example") }}</router-link> | 
+			<router-link to="/">首页</router-link> |
+			<router-link to="/about">关于</router-link> |
+			<router-link to="/example">示例</router-link> |
 			<a href="src/pages/test.html" target="_blank">访问多入口</a>
 		</div>
 		<router-view />
-		<div hidden>我知道你肯定会修改这里的^.^</div>
+		<div>我知道你肯定会修改这里的^.^</div>
 	</el-config-provider>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { i18n } from "./i18n";
 import { version, buildTime } from "../build/info.json"
 
-console.log(`%c Release Build Info 
+console.log(`%c Release Build Info
 %cVersion			v${version}
 BuildTime		${buildTime}`
 , "background:#000;color:#FFF;font-weight:bold;"
 , "background:#FFF;color:#000;"
 )
 
-let locale = computed(() => (i18n.global.messages as any)![i18n.global.locale]);
 </script>
 
 <style>
