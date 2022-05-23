@@ -13,7 +13,9 @@ interface NetBaseConfig extends NetConfig {
     canNoJson?: boolean,
     baseSuccess?: Function,
     baseFail?: Function,
-    baseComplete?: Function
+    baseComplete?: Function,
+    /** 字符串序列化成json字段 */
+    serializationField?: string
 }
 
 interface NetQueryConfig extends NetConfig {
@@ -38,3 +40,10 @@ interface NetReq {
     errMsg: string,
     data: any
 }
+
+interface TztCommonResponse<T> {
+    ERRORNO: string,
+    ACTION: string,
+    DATA: T,
+}
+

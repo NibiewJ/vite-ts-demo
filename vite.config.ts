@@ -6,7 +6,7 @@ import { readdirSync } from 'fs';
 
 /**
  * 获取多入口文件
- * @returns 
+ * @returns
  */
 export function getPages() {
   let pagePath = resolve(__dirname, "./src/pages");
@@ -31,7 +31,12 @@ export default defineConfig({
     }
   },
   server: {
-    host: process.env.NODE_ENV !== "production"
+    host: process.env.NODE_ENV !== "production",
+    proxy: {
+      '/reqxml': {
+        target: 'http://222.168.95.187:7773',
+      }
+    }
   },
   plugins: [
     changePackageVersion(),
@@ -43,5 +48,5 @@ export default defineConfig({
     rollupOptions: {
       input: getPages(),
     }
-  }
+  },
 })

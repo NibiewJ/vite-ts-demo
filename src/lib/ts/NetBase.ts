@@ -3,6 +3,17 @@
  * @author PHCS
  * @author 子不语<zz@pohun.com>
  */
+import {NeTztResponse} from "../../api/AjaxEngineApi";
+
+/**
+ * 前端框架异常
+ */
+export class FrontFrameworkError extends Error {
+
+    constructor(message: string) {
+        super(message);
+    }
+}
 
 export default class NetBase {
 
@@ -14,14 +25,18 @@ export default class NetBase {
         }
     }
 
-    async post<T>(url: string, params: NetParams = {}): Promise<T> {
-        url = this.config.baseUrl  + url;
+    async post<T>(url: string = '', params: NetParams = {}): Promise<T> {
+        url = this.config.baseUrl + url;
         return NetBase.spost<T>(url, params, this.config)
     }
 
     async get<T>(url: string, params: NetParams = {}): Promise<T> {
-        url = this.config.baseUrl + url;
-        return NetBase.sget(url, params, this.config);
+        let targetUrl = this.config.baseUrl + url;
+        return NetBase.sget(targetUrl, params, this.config);
+    }
+
+    async getAjax<T>(params: NetParams = {}): Promise<T> {
+        return NetBase.sget(this.config.baseUrl, params, this.config);
     }
 
     static create(config: NetBaseConfig) {
@@ -38,7 +53,7 @@ export default class NetBase {
                 "Content-Type": "application/x-www-form-urlencoded"
             }
         }
-        // 拦截器，但是为什么要拦截？
+        // 请求拦截器
         // config = config as NetBaseConfig;
         // _config = config.Interceptor && config.Interceptor.post ? config.Interceptor.post(_config) || _config;
         if (_config.headers["Content-Type"] === "application/x-www-form-urlencoded") {
@@ -56,7 +71,7 @@ export default class NetBase {
         }
         let _params: AnyObject = NetBase.getParams(params);
         url = NetBase.params2GetUrl(url, _params);
-        // 拦截器，但是为什么要拦截？
+        // 请求拦截器
         // config = config as NetBaseConfig;
         // _config = config.Interceptor && config.Interceptor.get ? config.Interceptor.get(_config) || _config;
         return NetBase.request<T>(url, _config, params, config as NetBaseConfig)
@@ -69,11 +84,11 @@ export default class NetBase {
 
     /** 获取请求数据（私有） */
     private static getParams(obj: NetParams): AnyObject {
-		var param: AnyObject = {};
-		for (var key in obj) {
-			if (!['_success', '_fail', '_complete'].includes(key)) param[key] = obj[key];
-		}
-		return param;
+        let param: AnyObject = {};
+        for (let key in obj) {
+            if (!['_success', '_fail', '_complete'].includes(key)) param[key] = obj[key];
+        }
+        return param;
     }
 
     private static params2Params(obj: AnyObject | string): string {
@@ -85,7 +100,7 @@ export default class NetBase {
             if (typeof obj[key] === "object") obj[key] = encodeURIComponent(JSON.stringify(obj[key]));
             // 过滤空数据
             if (obj[key] === null || obj[key] === undefined) continue;
-            params.push(key+'='+obj[key]);
+            params.push(key + '=' + obj[key]);
         }
         return params.join("&");
     }
@@ -94,17 +109,27 @@ export default class NetBase {
         let sparam = this.params2Params(obj);
         let and: string = "?";
         if (url.includes("?")) and = "&";
-        sparam = sparam ? and+sparam : "";
-        return url+sparam;
+        sparam = sparam ? and + sparam : "";
+        return url + sparam;
     }
 
     private static async request<T>(url: string, config: NetConfig, params: NetParams, baseConfig?: NetBaseConfig): Promise<T> {
         return new Promise<T>((resolve: (value: T) => void, reject: (reason?: any) => void) => {
             fetch(url, config)
-                .then(res=> {
+                .then(res => {
                     if (res.status === 200) {
                         res.json()
                             .then(json => {
+                                // 将json字符串序列化
+                                try {
+                                    if (baseConfig?.serializationField) {
+                                        json[baseConfig?.serializationField] = JSON.parse(json[baseConfig?.serializationField]);
+                                        // 前端异常测试
+                                        // json[baseConfig?.serializationField] = JSON.parse("{json[baseConfig?.serializationField]}");
+                                    }
+                                } catch (e) {
+                                    return Promise.reject(new FrontFrameworkError(`尝试对响应列${baseConfig?.serializationField}进行JSON序列化失败`));
+                                }
                                 if (baseConfig?.baseSuccess) json = baseConfig.baseSuccess(json) || json;
                                 if (baseConfig?.baseComplete) baseConfig.baseComplete(json);
                                 if (params._success) params._success(json);
@@ -161,15 +186,15 @@ export default class NetBase {
     //         NetBase._postarr.push(obj);
     //         return;
     //     }
-	// 	let formData;
-	// 	if (obj.form) {
-	// 		formData = new FormData(obj.form);
-	// 	} else {
-	// 		formData = new FormData();
-	// 	}
+    // 	let formData;
+    // 	if (obj.form) {
+    // 		formData = new FormData(obj.form);
+    // 	} else {
+    // 		formData = new FormData();
+    // 	}
     //     let url = obj.url || Core.URL_API;
     //     url += obj.s ? '' + obj.s : '';
-	// 	let params = NetBase._getPostParams(obj);
+    // 	let params = NetBase._getPostParams(obj);
     //     // formData.append(JSON.stringify(params));
     //     for (let key in params) {
     //         formData.append(key, params[key]);
