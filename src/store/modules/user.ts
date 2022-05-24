@@ -1,29 +1,64 @@
 import { Module } from "vuex";
 
 interface StoreUser {
-    text: string
+    /**
+     * 手机号
+     */
+    mobile: string,
+    /**
+     * 资金账号
+     */
+    fundAccount: string,
+    /**
+     * 客户号
+     */
+    userCode: string,
+    /**
+     * 自选股列表
+     */
+    selfStockList: string[],
+    /**
+     * 用户手机号登录凭证
+     */
+    userToken: string,
+    /**
+     * 唯一编号
+     */
+    uniqueId: string,
+
 }
 
 const store: Module<StoreUser, unknown> = {
     namespaced: true,
     state() {
         return {
-            text: "未修改"
+            mobile: "",
+            fundAccount: "",
+            userCode: "",
+            selfStockList: [],
+            userToken: "",
+            uniqueId: "",
+
         }
     },
     mutations: {
-        setText(state: StoreUser, payload: AnyObject) {
-            state.text = payload.text;
+        setUser(state: StoreUser, payload: AnyObject) {
+            state.mobile = payload.mobile;
+            state.fundAccount = payload.fundAccount;
+            state.userCode = payload.userCode;
+            state.selfStockList = payload.selfStockList;
+            state.userToken = payload.userToken;
         }
     },
     actions: {
-        setText(context, payload: AnyObject) {
+        readUserInfo(context, payload: AnyObject) {
+
             context.commit("setText", payload);
         }
     },
     getters: {
-        getText(state: StoreUser) {
-            return state.text
+        getUserInfo(state: StoreUser) {
+            return state
         }
     }
 }

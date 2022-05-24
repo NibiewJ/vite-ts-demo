@@ -1,17 +1,6 @@
-export const UNKNOWN_ERROR = '服务暂时不可用，请稍后重试';
-export const NETWORK_ERROR = '网络状况不佳，请检查您的网络后重试';
-export const CLIENT_INPUT_ERROR = '您输入的信息有误，请检查核对后重试';
-export const LOGIN_ELSE_ERROR = '异地登录,请尝试重新登录';
-export const MISSING_REQUIRED_FIELD = '请填写所有必填字段';
-export const SERVER_ERROR = '服务暂时不可用，请稍后重试';
-export const DEFAULT_MESSAGES = {
-  "0": UNKNOWN_ERROR,
-  "-101": LOGIN_ELSE_ERROR,
-  "-102": LOGIN_ELSE_ERROR,
-  "-103": LOGIN_ELSE_ERROR,
-  "-104": LOGIN_ELSE_ERROR,
-  "-403": CLIENT_INPUT_ERROR,
-  "-999": SERVER_ERROR,
+export const UNKNOWN_ERROR = '定制化的消息';
+export const CUSTOMER_MESSAGES = {
+  "-503": UNKNOWN_ERROR,
 };
 /**
  * 我想异常还是得进行区分几类
@@ -28,3 +17,4 @@ export const DEFAULT_MESSAGES = {
  * 一个通用消息(@lib/ts/GeneralMessages.ts)
  * 另外是定制消息(@lib/ts/CustomerMessages.ts)
  */
+

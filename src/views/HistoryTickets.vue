@@ -1,5 +1,5 @@
 <template>
-    <div>About {{ test }}</div>
+    <div>历史优惠券</div>
 </template>
 
 <style scoped>

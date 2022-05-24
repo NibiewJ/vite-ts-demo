@@ -3,8 +3,6 @@
  * @author PHCS
  * @author 子不语<zz@pohun.com>
  */
-import {NeTztResponse} from "../../api/AjaxEngineApi";
-
 /**
  * 前端框架异常
  */
@@ -25,42 +23,16 @@ export default class NetBase {
         }
     }
 
-    async post<T>(url: string = '', params: NetParams = {}): Promise<T> {
-        url = this.config.baseUrl + url;
-        return NetBase.spost<T>(url, params, this.config)
-    }
-
-    async get<T>(url: string, params: NetParams = {}): Promise<T> {
-        let targetUrl = this.config.baseUrl + url;
-        return NetBase.sget(targetUrl, params, this.config);
-    }
-
     async getAjax<T>(params: NetParams = {}): Promise<T> {
+        /**
+         * 请求服务器(0:行情;1:交易;2:资讯)
+         */
+        params.ReqlinkType = 2;
         return NetBase.sget(this.config.baseUrl, params, this.config);
     }
 
     static create(config: NetBaseConfig) {
         return new NetBase(config);
-    }
-
-    static async spost<T>(url: string, params: NetParams = {}, config?: NetConfig): Promise<T> {
-        let _config: NetQueryConfig = {
-            method: 'POST',
-            body: NetBase.getParams(params),
-            mode: config?.mode || "cors",
-            credentials: config?.credentials || "include",
-            headers: config?.headers || {
-                "Content-Type": "application/x-www-form-urlencoded"
-            }
-        }
-        // 请求拦截器
-        // config = config as NetBaseConfig;
-        // _config = config.Interceptor && config.Interceptor.post ? config.Interceptor.post(_config) || _config;
-        if (_config.headers["Content-Type"] === "application/x-www-form-urlencoded") {
-            _config.body = NetBase.params2Params(_config.body)
-        }
-        // _config = NetBase.interceptor.post(_config);
-        return NetBase.request<T>(url, _config, params, config as NetBaseConfig);
     }
 
     static async sget<T>(url: string, params: NetParams = {}, config?: NetConfig): Promise<T> {
@@ -76,11 +48,6 @@ export default class NetBase {
         // _config = config.Interceptor && config.Interceptor.get ? config.Interceptor.get(_config) || _config;
         return NetBase.request<T>(url, _config, params, config as NetBaseConfig)
     }
-
-    // static interceptor = {
-    //     post: ((config: (config: NetConfig) => {})): NetConfig => { return config },
-    //     get: (config: NetConfig): NetConfig => { return config },
-    // }
 
     /** 获取请求数据（私有） */
     private static getParams(obj: NetParams): AnyObject {
@@ -179,41 +146,5 @@ export default class NetBase {
         })
     }
 
-    /** 网络请求/上传文件 */
-    // static async postFile(obj: NetParams): Promise<any> {
-    //     if (!Core.config && obj.url !== '/static/json/config.json') {
-    //         obj.__isFile = true;
-    //         NetBase._postarr.push(obj);
-    //         return;
-    //     }
-    // 	let formData;
-    // 	if (obj.form) {
-    // 		formData = new FormData(obj.form);
-    // 	} else {
-    // 		formData = new FormData();
-    // 	}
-    //     let url = obj.url || Core.URL_API;
-    //     url += obj.s ? '' + obj.s : '';
-    // 	let params = NetBase._getPostParams(obj);
-    //     // formData.append(JSON.stringify(params));
-    //     for (let key in params) {
-    //         formData.append(key, params[key]);
-    //     }
-    //     if (obj.file) formData.append('file', obj.file)
-    //     // formData.append('file', 'test')
-    //     let _obj = {
-    //         method: obj._method || 'POST',
-    //         // body: formData,
-    //         body: formData,
-    //         mode: "cors",
-    //         credentials: obj._credentials || "include",
-    //         headers: {
-    //             // "enctype": "multipart/form-data"
-    //             // 'Access-Control-Allow-Origin': '*'
-    //             // 'Content-Type':'application/x-www-form-urlencoded'
-    //         }
-    //     }
-    //     return NetBase.request(url, _obj, obj);
-    // }
 
 }

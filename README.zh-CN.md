@@ -1,11 +1,8 @@
 # 安装
 
-使用 `npx degit pohunchn/vite-ts-quick#main my-project` 或者 `git clone ...` 拉取代码
+使用 `git clone ...` 拉取代码
 
 拉取代码后，在项目根目录执行`npm install`，成功后执行`npm run dev`即可启动项目（需安装nodejs+npm）
-
-# 其他模版
-- [vite-react-quick](https://gitee.com/phcs/vite-react-quick) - React
 
 # 内置模块
 * NetBase([Fetch](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch))
@@ -13,8 +10,6 @@
 * Storage
 * [vue-router](https://next.router.vuejs.org/zh/)
 * [vuex](https://next.vuex.vuejs.org/zh/)
-* [vue-i18n](https://vue-i18n.intlify.dev/)
-* [element-plus](https://element-plus.gitee.io/#/zh-CN/component/installation)
 
 # 注意事项
 * 本框架采用 [Fetch](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch) 作为网络请求器，不建议再次引入 axios
@@ -30,11 +25,7 @@
 
 This template should help get you started developing with Vue 3 and Typescript in Vite.
 
-### Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Vetur](https://marketplace.visualstudio.com/items?itemName=octref.vetur). Make sure to enable `vetur.experimental.templateInterpolationService` in settings!
-
-#### If Using `<script setup>`
+#### 如果使用 `<script setup>`
 
 [`<script setup>`](https://github.com/vuejs/rfcs/pull/227) is a feature that is currently in RFC stage. To get proper IDE support for the syntax, use [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) instead of Vetur (and disable Vetur).
 

@@ -1,14 +1,12 @@
 <template>
-	<el-config-provider :locale="locale">
+	<div>
 		<div id="nav">
-			<router-link to="/">首页</router-link> |
-			<router-link to="/about">关于</router-link> |
-			<router-link to="/example">示例</router-link> |
-			<a href="src/pages/test.html" target="_blank">访问多入口</a>
+			<router-link to="/">领券中心</router-link> |
+			<router-link to="/myTickets">我的优惠券</router-link> |
+			<router-link to="/historyTickets">历史优惠券</router-link>
 		</div>
 		<router-view />
-		<div>我知道你肯定会修改这里的^.^</div>
-	</el-config-provider>
+	</div>
 </template>
 
 <script setup lang="ts">
