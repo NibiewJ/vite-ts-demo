@@ -19,6 +19,21 @@
 * **欢迎 `issues` 及 `pr`**
 * **欢迎 `star`**
 
+# 已完成内容
+* 页面框架
+* 接口请求
+* store
+* router
+
+# 待办事项
+* 获取用户信息
+* 神策埋点
+* 中焯跳转
+* 组件定义
+* 打包后目录名修改
+* 开发发布流程
+* 类型约束
+
 # 以下为 vue3 教学
 
 ## Vue 3 + Typescript + Vite
@@ -43,3 +58,5 @@ Run `Volar: Switch TS Plugin on/off` from VSCode command palette.
 2. Delete `src/shims-vue.d.ts` as it is no longer needed to provide module info to Typescript
 3. Open `src/main.ts` in VSCode
 4. Open the VSCode command palette 5. Search and run "Select TypeScript version" -> "Use workspace version"
+
+
