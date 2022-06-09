@@ -23,6 +23,11 @@ export default class NetBase {
         }
     }
 
+    async post<T>(url: string, params: NetParams = {}): Promise<T> {
+        url = this.config.baseUrl  + url;
+        return NetBase.spost<T>(url, params, this.config)
+    }
+
     async getAjax<T>(params: NetParams = {}): Promise<T> {
         /**
          * 请求服务器(0:行情;1:交易;2:资讯)
@@ -33,6 +38,25 @@ export default class NetBase {
 
     static create(config: NetBaseConfig) {
         return new NetBase(config);
+    }
+    static async spost<T>(url: string, params: NetParams = {}, config?: NetConfig): Promise<T> {
+        let _config: NetQueryConfig = {
+            method: 'POST',
+            body: NetBase.getParams(params),
+            mode: config?.mode || "cors",
+            credentials: config?.credentials || "include",
+            headers: config?.headers || {
+                "Content-Type": "application/x-www-form-urlencoded"
+            }
+        }
+        // 拦截器，但是为什么要拦截？
+        // config = config as NetBaseConfig;
+        // _config = config.Interceptor && config.Interceptor.post ? config.Interceptor.post(_config) || _config;
+        if (_config.headers["Content-Type"] === "application/x-www-form-urlencoded") {
+            _config.body = NetBase.params2Params(_config.body)
+        }
+        // _config = NetBase.interceptor.post(_config);
+        return NetBase.request<T>(url, _config, params, config as NetBaseConfig);
     }
 
     static async sget<T>(url: string, params: NetParams = {}, config?: NetConfig): Promise<T> {

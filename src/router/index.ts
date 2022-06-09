@@ -25,7 +25,8 @@ function loadRouters() {
     const routes: RouteRecordRaw[] = [];
 
     Object.keys(context).forEach((key: any) => {
-        if (key === "./index.ts") return;
+		console.log(context[key]);
+		if (key === "./index.ts") return;
 		let name = key.replace(/(\.\.\/views\/|\.vue)/g, '');
 		let path = "/" + name.toLowerCase();
 		if (name === "Index") path = "/";
