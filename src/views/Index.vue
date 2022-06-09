@@ -12,5 +12,23 @@
 </style>
 
 <script setup lang="ts">
+import { onBeforeRouteUpdate, onBeforeRouteLeave } from "vue-router";
+import {operatePageView} from "../sensors";
 
+/**
+ * 进入页面
+ */
+onBeforeRouteUpdate(((to, from, next) => {
+  operatePageView({
+    page_title: "测试页面标题"
+  });
+  next();
+}))
+/**
+ * 离开页面
+ */
+onBeforeRouteLeave( (to, from, next) => {
+  console.log('onBeforeRouteLeave');
+  next();
+})
 </script>

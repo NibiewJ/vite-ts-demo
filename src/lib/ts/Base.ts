@@ -9,10 +9,12 @@ import NetBase from './NetBase';
 import Storage from './Storage';
 
 const IS_DEV = process.env.NODE_ENV == 'development'
+const IS_PROD = import.meta.env.PROD
 
 export default class Base {
 
     static IS_DEV = IS_DEV;
+    static IS_PROD = IS_PROD;
 
     static NetBase = NetBase
     static Cookie = Cookie
@@ -24,5 +26,5 @@ export default class Base {
         let b = JSON.parse(a);
         return b;
     }
-    
+
 }
