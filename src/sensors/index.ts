@@ -10,6 +10,7 @@ export const init = () => {
         is_track_single_page: true, // 单页面配置，默认开启，若页面中有锚点设计，需要将该配置删除，否则触发锚点会多触发 $pageview 事件
         use_client_time: true,
         send_type: 'beacon',
+        show_log: !Base.IS_PROD,
         heatmap: {
             //是否开启点击图，default 表示开启，自动采集 $WebClick 事件，可以设置 'not_collect' 表示关闭。
             clickmap: 'default',
@@ -18,11 +19,12 @@ export const init = () => {
         }
     });
 
-// 以异步加载 SDK 为例，神策 SDK 初始化完成，此时调用设置公共属性的方法，来保证之后的事件都有这两个属性。
+    // 以异步加载 SDK 为例，神策 SDK 初始化完成，此时调用设置公共属性的方法，来保证之后的事件都有这两个属性。
     sa.registerPage({
         platform_type: "H5",
         business_type: '卡券',
     });
+    sa.use('PageLoad', {});
 };
 /**
  * 神策埋点
@@ -30,12 +32,12 @@ export const init = () => {
  * @param properties 上报数据
  */
 function addBuriedPoint(eventName: string, properties = {}) {
-    (window as any).sensors.track(eventName, properties);
+    sa.track(eventName, properties);
 }
 /**
- * OperatePage_view 页面浏览
+ * page_view 页面浏览
  * @param properties
  */
-export function operatePageView(properties = {}) {
-    addBuriedPoint('OperactPage_view', properties);
+export function pageView(properties = {}) {
+    addBuriedPoint('page_view', properties);
 }
